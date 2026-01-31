@@ -45,13 +45,21 @@ body {
     text-align: center;
     color: white;
     box-shadow: 0 0 40px rgba(0,0,0,0.35);
-    width: min(90vw, 700px);
+    width: min(90vw, 720px);
 }
 
-/* TEXT */
-h1 {
-    font-size: 2.6rem;
+/* 💌 LONG MESSAGE */
+.message {
+    font-size: 1.15rem;
+    line-height: 1.6;
     margin-bottom: 30px;
+    opacity: 0.95;
+}
+
+/* 💍 QUESTION */
+h1 {
+    font-size: 2.4rem;
+    margin-bottom: 25px;
 }
 
 /* 🖼️ IMAGE */
@@ -68,7 +76,6 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
     max-width: 360px;
     margin: 0 auto;
 }
@@ -111,16 +118,26 @@ h1 {
 <body>
 
 <div class="card" id="card">
+
+    <!-- 💌 LONG TEXT MESSAGE -->
+    <div class="message">
+        From the moment you became a part of my life, everything started feeling a little warmer,
+        a little brighter, and a lot more meaningful. This isn’t just a question — it’s me
+        choosing you, hoping you’ll choose me too.
+    </div>
+
+    <!-- 💍 PROPOSAL QUESTION -->
     <h1>Will you be my Valentine? 💘</h1>
 
-    <!-- IMAGE BELOW QUESTION -->
+    <!-- 🖼️ IMAGE -->
     <img src="meme2.jpg" alt="Meme" class="meme">
 
-    <!-- BUTTONS BELOW IMAGE -->
+    <!-- 🔘 OPTIONS -->
     <div class="buttons">
         <button id="yes">Yes 💖</button>
         <div style="width: 1px;"></div>
     </div>
+
 </div>
 
 <button id="no">No 😭😭</button>
@@ -137,14 +154,14 @@ for (let i = 0; i < 40; i++) {
     document.body.appendChild(rose);
 }
 
-/* 📍 INITIAL NO POSITION (RIGHT OF IMAGE) */
+/* 📍 INITIAL NO POSITION (RIGHT SIDE OF OPTIONS) */
 const card = document.getElementById("card");
 const noBtn = document.getElementById("no");
 
 function positionNoInitially() {
     const rect = card.getBoundingClientRect();
     noBtn.style.left = rect.left + rect.width / 2 + 80 + "px";
-    noBtn.style.top = rect.top + rect.height - 95 + "px";
+    noBtn.style.top = rect.top + rect.height - 85 + "px";
 }
 
 positionNoInitially();
