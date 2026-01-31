@@ -24,6 +24,7 @@ body {
     font-size: 24px;
     opacity: 0.6;
     animation: float 12s linear infinite;
+    pointer-events: none;
 }
 
 @keyframes float {
@@ -39,8 +40,8 @@ body {
     transform: translate(-50%, -50%);
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
-    padding: 40px 50px;
-    border-radius: 20px;
+    padding: 40px 55px;
+    border-radius: 22px;
     text-align: center;
     color: white;
     box-shadow: 0 0 30px rgba(0,0,0,0.3);
@@ -48,163 +49,85 @@ body {
 }
 
 h1 {
-    font-size: 2.8rem;
-    margin-bottom: 25px;
+    font-size: 2.6rem;
+    margin-bottom: 30px;
 }
 
+/* BUTTONS */
 .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
     position: relative;
+    height: 80px;
 }
 
 button {
     font-size: 1.2rem;
-    padding: 12px 30px;
+    padding: 12px 32px;
     border-radius: 30px;
     border: none;
     cursor: pointer;
+    transition: transform 0.15s ease;
 }
 
 #yes {
     background: #ff4d6d;
     color: white;
     box-shadow: 0 0 15px rgba(255,77,109,0.8);
+    position: relative;
 }
 
 #no {
     background: #fff;
     color: #b00020;
     position: absolute;
-}
-
-/* THANK YOU MESSAGE */
-.message {
-    margin-top: 25px;
-    font-size: 1.6rem;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 1s ease;
-}
-
-.message.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* HEARTS */
-.heart {
-    position: absolute;
-    font-size: 22px;
-    animation: rise 4s linear forwards;
-    pointer-events: none;
-}
-
-@keyframes rise {
-    from { opacity: 1; transform: translateY(0) scale(1); }
-    to { opacity: 0; transform: translateY(-200px) scale(1.8); }
-}
-
-/* FIREWORKS */
-.spark {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    animation: explode 1s ease-out forwards;
-}
-
-@keyframes explode {
-    from { transform: scale(1); opacity: 1; }
-    to {
-        transform: translate(var(--x), var(--y)) scale(0);
-        opacity: 0;
-    }
+    left: 55%;
+    top: 0;
 }
 </style>
 </head>
 
 <body>
 
-<audio id="bgMusic" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8c54a7d3f5.mp3?filename=romantic-piano-112191.mp3" type="audio/mpeg">
-</audio>
-
 <div class="card">
     <h1>Will you be my Valentine? 💘</h1>
     <div class="buttons">
         <button id="yes">Yes 💖</button>
-        <button id="no">No 🙈</button>
-    </div>
-    <div class="message" id="thankYou">
-        Thank you so much for bestowing such honor on me!
+        <button id="no">No 😓😭</button>
     </div>
 </div>
 
 <script>
-/* ROSES */
+/* CREATE ROSES */
 for (let i = 0; i < 40; i++) {
     const rose = document.createElement("div");
     rose.className = "rose";
     rose.textContent = "🌹";
     rose.style.left = Math.random() * 100 + "vw";
     rose.style.animationDuration = 8 + Math.random() * 10 + "s";
-    rose.style.fontSize = 18 + Math.random() * 25 + "px";
+    rose.style.fontSize = 18 + Math.random() * 26 + "px";
     document.body.appendChild(rose);
 }
 
 /* NO BUTTON RUNS AWAY */
 const noBtn = document.getElementById("no");
+
 function moveNo() {
-    noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
-    noBtn.style.top = Math.random() * (window.innerHeight - 80) + "px";
+    const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+    const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 }
-noBtn.addEventListener("mouseover", moveNo);
+
+noBtn.addEventListener("mouseenter", moveNo);
 noBtn.addEventListener("touchstart", moveNo);
 
-/* YES CLICK EFFECTS */
-const yesBtn = document.getElementById("yes");
-const bgMusic = document.getElementById("bgMusic");
-const message = document.getElementById("thankYou");
-
-yesBtn.addEventListener("click", () => {
-    bgMusic.volume = 0.6;
-    bgMusic.play();
-
-    message.classList.add("show");
-
-    for (let i = 0; i < 80; i++) {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.textContent = "❤️";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.bottom = "0px";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 4000);
-    }
-
-    for (let i = 0; i < 6; i++) {
-        firework(
-            Math.random() * window.innerWidth,
-            Math.random() * window.innerHeight / 2
-        );
-    }
+/* YES → NEXT PAGE */
+document.getElementById("yes").addEventListener("click", () => {
+    window.location.href = "yes.html";
 });
-
-function firework(x, y) {
-    for (let i = 0; i < 30; i++) {
-        const spark = document.createElement("div");
-        spark.className = "spark";
-        spark.style.left = x + "px";
-        spark.style.top = y + "px";
-        spark.style.background = `hsl(${Math.random()*360},100%,60%)`;
-        spark.style.setProperty("--x", `${(Math.random()-0.5)*300}px`);
-        spark.style.setProperty("--y", `${(Math.random()-0.5)*300}px`);
-        document.body.appendChild(spark);
-        setTimeout(() => spark.remove(), 1000);
-    }
-}
 </script>
 
 </body>
