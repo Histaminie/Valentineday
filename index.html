@@ -40,8 +40,8 @@ body {
     transform: translate(-50%, -50%);
     background: rgba(255, 255, 255, 0.18);
     backdrop-filter: blur(12px);
-    padding: 45px 60px;
-    border-radius: 24px;
+    padding: 45px 70px 55px;
+    border-radius: 26px;
     text-align: center;
     color: white;
     box-shadow: 0 0 40px rgba(0,0,0,0.35);
@@ -50,34 +50,53 @@ body {
 
 h1 {
     font-size: 2.6rem;
-    margin-bottom: 35px;
+    margin-bottom: 40px;
 }
 
-/* ❤️ YES */
+/* 🔘 BUTTON ROW */
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 80px;
+}
+
+/* 💖 YES (appealing) */
 #yes {
-    font-size: 1.2rem;
-    padding: 14px 36px;
-    border-radius: 30px;
+    font-size: 1.25rem;
+    padding: 16px 42px;
+    border-radius: 40px;
     border: none;
     cursor: pointer;
-    background: #ff4d6d;
+
+    background: linear-gradient(135deg, #ff4d6d, #ff6f91);
     color: white;
-    box-shadow: 0 0 18px rgba(255,77,109,0.8);
+    box-shadow:
+        0 0 25px rgba(255,77,109,0.9),
+        0 0 50px rgba(255,77,109,0.6);
+
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
 }
 
-/* 🙈 NO (RUNAWAY) */
+#yes:hover {
+    transform: scale(1.1);
+}
+
+/* 🙈 NO (unappealing) */
 #no {
-    font-size: 1.2rem;
-    padding: 14px 36px;
-    border-radius: 30px;
+    font-size: 1.15rem;
+    padding: 14px 38px;
+    border-radius: 40px;
     border: none;
     cursor: pointer;
-    background: #fff;
-    color: #b00020;
+
+    background: #f3f3f3;
+    color: #888;
+    box-shadow: none;
 
     position: fixed;
     z-index: 20;
-    transition: transform 0.15s ease-out;
 }
 </style>
 </head>
@@ -86,7 +105,11 @@ h1 {
 
 <div class="card" id="card">
     <h1>Will you be my Valentine? 💘</h1>
-    <button id="yes">Yes 💖</button>
+
+    <div class="button-row">
+        <button id="yes">Yes 💖</button>
+        <div style="width: 1px;"></div> <!-- spacer -->
+    </div>
 </div>
 
 <button id="no">No 😭😭</button>
@@ -103,55 +126,54 @@ for (let i = 0; i < 40; i++) {
     document.body.appendChild(rose);
 }
 
-/* 📍 INITIAL POSITIONING OF NO BUTTON */
+/* 📍 INITIAL SYMMETRICAL POSITIONING */
 const card = document.getElementById("card");
+const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
 
-function positionNoInitially() {
+function positionButtons() {
     const cardRect = card.getBoundingClientRect();
-    noBtn.style.left = cardRect.right - 40 + "px";
-    noBtn.style.top = cardRect.bottom - 70 + "px";
+    const y = cardRect.bottom - 95;
+
+    noBtn.style.left = cardRect.left + cardRect.width / 2 + 70 + "px";
+    noBtn.style.top = y + "px";
 }
 
-positionNoInitially();
-window.addEventListener("resize", positionNoInitially);
+positionButtons();
+window.addEventListener("resize", positionButtons);
 
-/* 🏃 RUNAWAY LOGIC */
+/* 🏃 RUNAWAY BEHAVIOR */
 function runaway(x, y) {
     const rect = noBtn.getBoundingClientRect();
-    const btnCenterX = rect.left + rect.width / 2;
-    const btnCenterY = rect.top + rect.height / 2;
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
 
-    const dx = btnCenterX - x;
-    const dy = btnCenterY - y;
+    const dx = cx - x;
+    const dy = cy - y;
+    const dist = Math.sqrt(dx*dx + dy*dy) || 1;
 
-    const distance = Math.sqrt(dx * dx + dy * dy) || 1;
+    const moveX = (dx / dist) * 140;
+    const moveY = (dy / dist) * 140;
 
-    const moveX = (dx / distance) * 140;
-    const moveY = (dy / distance) * 140;
+    let nx = rect.left + moveX;
+    let ny = rect.top + moveY;
 
-    let newX = rect.left + moveX;
-    let newY = rect.top + moveY;
+    const pad = 12;
+    nx = Math.max(pad, Math.min(window.innerWidth - rect.width - pad, nx));
+    ny = Math.max(pad, Math.min(window.innerHeight - rect.height - pad, ny));
 
-    const padding = 12;
-    newX = Math.max(padding, Math.min(window.innerWidth - rect.width - padding, newX));
-    newY = Math.max(padding, Math.min(window.innerHeight - rect.height - padding, newY));
-
-    noBtn.style.left = newX + "px";
-    noBtn.style.top = newY + "px";
+    noBtn.style.left = nx + "px";
+    noBtn.style.top = ny + "px";
 }
 
-noBtn.addEventListener("mouseenter", e => {
-    runaway(e.clientX, e.clientY);
-});
-
+noBtn.addEventListener("mouseenter", e => runaway(e.clientX, e.clientY));
 noBtn.addEventListener("touchstart", e => {
     const t = e.touches[0];
     runaway(t.clientX, t.clientY);
 });
 
 /* 💖 YES → NEXT PAGE */
-document.getElementById("yes").addEventListener("click", () => {
+yesBtn.addEventListener("click", () => {
     window.location.href = "yes.html";
 });
 </script>
