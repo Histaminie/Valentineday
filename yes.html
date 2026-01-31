@@ -6,7 +6,10 @@
 <title>Yay 💖</title>
 
 <style>
-* { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
 body {
     margin: 0;
@@ -15,12 +18,13 @@ body {
     background: radial-gradient(circle at top, #ffb6c1, #8b0000);
 }
 
-/* ROSES */
+/* 🌹 ROSES */
 .rose {
     position: absolute;
     font-size: 22px;
     opacity: 0.6;
     animation: float 12s linear infinite;
+    pointer-events: none;
 }
 
 @keyframes float {
@@ -28,7 +32,7 @@ body {
     to { transform: translateY(-10vh) rotate(360deg); }
 }
 
-/* CARD */
+/* 💎 CARD */
 .card {
     position: absolute;
     top: 50%;
@@ -36,25 +40,29 @@ body {
     transform: translate(-50%, -50%);
     background: rgba(255,255,255,0.18);
     backdrop-filter: blur(12px);
-    padding: 45px 55px;
-    border-radius: 22px;
+    padding: 40px 45px;
+    border-radius: 24px;
     text-align: center;
     color: white;
     box-shadow: 0 0 40px rgba(0,0,0,0.35);
     z-index: 10;
+    max-width: 90vw;
 }
 
-h1 {
-    font-size: 2.4rem;
-    margin-bottom: 15px;
+/* 🖼️ IMAGE PLACEHOLDER */
+.meme {
+    margin: 20px 0;
+    width: 100%;
+    max-width: 360px;
+    border-radius: 18px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.35);
 }
 
-/* CONFETTI */
+/* 🎉 CONFETTI */
 .confetti {
     position: absolute;
     width: 8px;
     height: 8px;
-    background: red;
     animation: fall 4s linear forwards;
 }
 
@@ -65,11 +73,12 @@ h1 {
     }
 }
 
-/* HEARTS */
+/* ❤️ HEARTS */
 .heart {
     position: absolute;
     font-size: 22px;
     animation: rise 4s linear forwards;
+    pointer-events: none;
 }
 
 @keyframes rise {
@@ -81,16 +90,22 @@ h1 {
 
 <body>
 
+<!-- 🎵 MUSIC -->
 <audio autoplay loop>
     <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8c54a7d3f5.mp3?filename=romantic-piano-112191.mp3">
 </audio>
 
 <div class="card">
     <h1>Thank you so much for bestowing such honor on me! 💖</h1>
+
+    <!-- 🖼️ PLACE YOUR MEME IMAGE IN ROOT FOLDER -->
+    <img src="meme.jpg" alt="Meme goes here" class="meme">
+
+    <p>You just made my day ❤️</p>
 </div>
 
 <script>
-/* ROSES */
+/* 🌹 ROSES */
 for (let i = 0; i < 35; i++) {
     const rose = document.createElement("div");
     rose.className = "rose";
@@ -100,7 +115,7 @@ for (let i = 0; i < 35; i++) {
     document.body.appendChild(rose);
 }
 
-/* CONFETTI */
+/* 🎉 CONFETTI */
 for (let i = 0; i < 120; i++) {
     const c = document.createElement("div");
     c.className = "confetti";
@@ -111,7 +126,7 @@ for (let i = 0; i < 120; i++) {
     document.body.appendChild(c);
 }
 
-/* HEARTS */
+/* ❤️ HEARTS */
 setInterval(() => {
     const heart = document.createElement("div");
     heart.className = "heart";
