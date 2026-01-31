@@ -38,79 +38,72 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(255,255,255,0.18);
     backdrop-filter: blur(12px);
-    padding: 45px 70px 40px;
+    padding: 45px 70px;
     border-radius: 26px;
     text-align: center;
     color: white;
     box-shadow: 0 0 40px rgba(0,0,0,0.35);
-    z-index: 5;
-    min-width: 420px;
+    width: min(90vw, 700px);
 }
 
+/* TEXT */
 h1 {
     font-size: 2.6rem;
-    margin-bottom: 35px;
+    margin-bottom: 30px;
+}
+
+/* 🖼️ IMAGE */
+.meme {
+    width: 100%;
+    max-width: 360px;
+    border-radius: 18px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.4);
+    margin-bottom: 30px;
 }
 
 /* 🔘 BUTTON ROW */
-.button-row {
-    position: relative;
-    height: 70px;
-    margin-bottom: 25px;
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
 }
 
 /* 💖 YES */
 #yes {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%) scale(1.07);
-
     font-size: 1.25rem;
     padding: 16px 44px;
     border-radius: 40px;
     border: none;
     cursor: pointer;
-
     background: linear-gradient(135deg, #ff4d6d, #ff6f91);
     color: white;
     box-shadow:
         0 0 25px rgba(255,77,109,0.9),
         0 0 50px rgba(255,77,109,0.6);
-
+    transform: scale(1.05);
     transition: transform 0.2s ease;
 }
 
 #yes:hover {
-    transform: translateY(-50%) scale(1.13);
+    transform: scale(1.12);
 }
 
 /* 🙈 NO */
 #no {
-    position: fixed;
-
     font-size: 1.15rem;
     padding: 14px 38px;
     border-radius: 40px;
     border: none;
     cursor: pointer;
-
     background: #f2f2f2;
     color: #999;
-    box-shadow: none;
-
+    position: fixed;
     z-index: 20;
-}
-
-/* 🖼️ MEME PLACEHOLDER */
-.meme {
-    margin-top: 10px;
-    width: 100%;
-    max-width: 300px;
-    border-radius: 18px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.35);
 }
 </style>
 </head>
@@ -120,12 +113,14 @@ h1 {
 <div class="card" id="card">
     <h1>Will you be my Valentine? 💘</h1>
 
-    <div class="button-row">
-        <button id="yes">Yes 💖</button>
-    </div>
+    <!-- IMAGE BELOW QUESTION -->
+    <img src="meme2.jpg" alt="Meme" class="meme">
 
-    <!-- 🖼️ IMAGE PLACEHOLDER (ROOT FOLDER) -->
-    <img src="meme2.jpg" alt="Meme placeholder" class="meme">
+    <!-- BUTTONS BELOW IMAGE -->
+    <div class="buttons">
+        <button id="yes">Yes 💖</button>
+        <div style="width: 1px;"></div>
+    </div>
 </div>
 
 <button id="no">No 😭😭</button>
@@ -142,15 +137,14 @@ for (let i = 0; i < 40; i++) {
     document.body.appendChild(rose);
 }
 
-/* 📍 INITIAL SYMMETRICAL POSITIONING */
+/* 📍 INITIAL NO POSITION (RIGHT OF IMAGE) */
 const card = document.getElementById("card");
 const noBtn = document.getElementById("no");
 
 function positionNoInitially() {
     const rect = card.getBoundingClientRect();
-
-    noBtn.style.left = rect.right - noBtn.offsetWidth + "px";
-    noBtn.style.top = rect.top + rect.height / 2 - noBtn.offsetHeight / 2 + "px";
+    noBtn.style.left = rect.left + rect.width / 2 + 80 + "px";
+    noBtn.style.top = rect.top + rect.height - 95 + "px";
 }
 
 positionNoInitially();
