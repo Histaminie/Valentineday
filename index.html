@@ -18,10 +18,10 @@ body {
     background: radial-gradient(circle at top, #ffb6c1, #8b0000);
 }
 
-/* ROSE BACKGROUND */
+/* 🌹 ROSES */
 .rose {
     position: absolute;
-    font-size: 24px;
+    font-size: 22px;
     opacity: 0.6;
     animation: float 12s linear infinite;
     pointer-events: none;
@@ -32,55 +32,54 @@ body {
     to { transform: translateY(-10vh) rotate(360deg); }
 }
 
-/* CENTER CARD */
+/* 💎 CARD */
 .card {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    padding: 40px 55px;
-    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(12px);
+    padding: 45px 60px;
+    border-radius: 24px;
     text-align: center;
     color: white;
-    box-shadow: 0 0 30px rgba(0,0,0,0.3);
-    z-index: 10;
+    box-shadow: 0 0 40px rgba(0,0,0,0.35);
+    z-index: 5;
 }
 
 h1 {
     font-size: 2.6rem;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
 }
 
-/* BUTTONS */
-.buttons {
-    position: relative;
-    height: 80px;
-}
-
-button {
+/* ❤️ YES */
+#yes {
     font-size: 1.2rem;
-    padding: 12px 32px;
+    padding: 14px 36px;
     border-radius: 30px;
     border: none;
     cursor: pointer;
-    transition: transform 0.15s ease;
-}
-
-#yes {
     background: #ff4d6d;
     color: white;
-    box-shadow: 0 0 15px rgba(255,77,109,0.8);
-    position: relative;
+    box-shadow: 0 0 18px rgba(255,77,109,0.8);
 }
 
+/* 🙈 NO (RUNAWAY) */
 #no {
+    font-size: 1.2rem;
+    padding: 14px 36px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
     background: #fff;
     color: #b00020;
-    position: absolute;
+
+    position: fixed;
     left: 55%;
-    top: 0;
+    top: 60%;
+    transition: transform 0.15s ease-out;
+    z-index: 20;
 }
 </style>
 </head>
@@ -89,14 +88,13 @@ button {
 
 <div class="card">
     <h1>Will you be my Valentine? 💘</h1>
-    <div class="buttons">
-        <button id="yes">Yes 💖</button>
-        <button id="no">No 😓😭</button>
-    </div>
+    <button id="yes">Yes 💖</button>
 </div>
 
+<button id="no">No 😭😭</button>
+
 <script>
-/* CREATE ROSES */
+/* 🌹 ROSES */
 for (let i = 0; i < 40; i++) {
     const rose = document.createElement("div");
     rose.className = "rose";
@@ -107,24 +105,43 @@ for (let i = 0; i < 40; i++) {
     document.body.appendChild(rose);
 }
 
-/* NO BUTTON RUNS AWAY */
-const noBtn = document.getElementById("no");
+/* 🏃‍♂️ RUNAWAY BUTTON LOGIC */
+const runawayBtn = document.getElementById("no");
 
-function moveNo() {
-    const maxX = window.innerWidth - noBtn.offsetWidth - 20;
-    const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+function runaway(x, y) {
+    const rect = runawayBtn.getBoundingClientRect();
+    const btnCenterX = rect.left + rect.width / 2;
+    const btnCenterY = rect.top + rect.height / 2;
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
+    const dx = btnCenterX - x;
+    const dy = btnCenterY - y;
 
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+    const distance = Math.sqrt(dx * dx + dy * dy) || 1;
+
+    const moveX = (dx / distance) * 120;
+    const moveY = (dy / distance) * 120;
+
+    let newX = rect.left + moveX;
+    let newY = rect.top + moveY;
+
+    // keep inside viewport
+    newX = Math.max(10, Math.min(window.innerWidth - rect.width - 10, newX));
+    newY = Math.max(10, Math.min(window.innerHeight - rect.height - 10, newY));
+
+    runawayBtn.style.left = newX + "px";
+    runawayBtn.style.top = newY + "px";
 }
 
-noBtn.addEventListener("mouseenter", moveNo);
-noBtn.addEventListener("touchstart", moveNo);
+runawayBtn.addEventListener("mouseenter", e => {
+    runaway(e.clientX, e.clientY);
+});
 
-/* YES → NEXT PAGE */
+runawayBtn.addEventListener("touchstart", e => {
+    const touch = e.touches[0];
+    runaway(touch.clientX, touch.clientY);
+});
+
+/* 💖 YES → NEXT PAGE */
 document.getElementById("yes").addEventListener("click", () => {
     window.location.href = "yes.html";
 });
